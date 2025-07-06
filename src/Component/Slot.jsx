@@ -1,11 +1,10 @@
 import React from "react";
 import Board from "../Class/Board";
 
-const Slot = ({ className = "", cell, index, convert,  slotdata}) => {
-
+const Slot = ({ className = "", cell, index }) => {
   const slotPos = (slots) => {
-
-    const slot = convert(slots)
+    const func = new Board();
+    const slot = func.convertPos2(slots);
     return slot;
   };
 
@@ -13,7 +12,7 @@ const Slot = ({ className = "", cell, index, convert,  slotdata}) => {
     const data = e.target.getAttribute("data-item");
     const item = JSON.parse(data);
     if (item) {
-      e.dataTransfer.setData("application/json", JSON.stringify(item));
+      e.dataTransfer.setData("text/plain", JSON.stringify(item));
     }
   };
 
@@ -23,37 +22,27 @@ const Slot = ({ className = "", cell, index, convert,  slotdata}) => {
 
   const dragDrop = (e) => {
     e.preventDefault();
-    const data = e.dataTransfer.getData("application/json");
-    const item = JSON.parse(data)
-    const cell = e.target.id
-    slotdata(item,cell)
-    
+    const data = e.dataTransfer.getData("text/plain");
   };
 
-
-  // /figure_picture/BackBishop.jpg
-  // /figure_picture/LightBishop.jpg
   const handlepicture = (item) => {
-    let src = ""
-    switch(item.Side) {
-      case "W" : {
-        src = "/figure_picture/LightBishop.jpg"
-        break
+    let src = "";
+    switch (item.Name) {
+      case "B": {
+        if (item.Side === "W") {
+          src = "/figure_picture/LightBishop.jpg";
+        } else if (item.Side === "B") {
+          src = "/figure_picture/BackBishop.jpg";
+        }
+        break;
       }
-      case "B" : {
-        src = "/figure_picture/BackBishop.jpg"
-        break
-      }  
     }
-
     return src;
   };
 
   return (
     <div className={`${className}`}>
-      {
-      
-      cell.map((item, index2) => {
+      {cell.map((item, index2) => {
         const pos = slotPos([index, index2]);
         return index % 2 === 0 ? (
           <div
@@ -79,7 +68,7 @@ const Slot = ({ className = "", cell, index, convert,  slotdata}) => {
                 alt=""
               />
             ) : (
-              null
+              <img src="" />
             )}
           </div>
         ) : (
@@ -101,12 +90,12 @@ const Slot = ({ className = "", cell, index, convert,  slotdata}) => {
                   pos: item.Pos,
                   side: item.Side,
                 })}
-                className="w-full  h-full overflow-hidden cursor-grab"
+                className="w-full  h-full overflow-hidden object-cover"
                 src={handlepicture(item)}
                 alt=""
               />
             ) : (
-               null
+               <img src="" />
             )}
           </div>
         );

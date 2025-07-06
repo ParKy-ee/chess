@@ -36,27 +36,35 @@ export default class Board {
     });
   }
 
+
+
   move(name, posOld, posNew) {
     const fig = this.findFigure(name, posOld);
-
     if (fig) {
+
       const cellOld = this.convertPos(fig.Pos);
       const moveAble = fig.findMoveAble(cellOld, this.grid);
-      const newCell = this.convertPos(posNew);
-      const moveSet = new Set(moveAble.map((cell) => cell.join(",")));
-      if (moveSet.has(newCell.join(","))) {
-        this.grid[cellOld[0]][cellOld[1]] = null;
+      
+      // test
+      console.log(moveAble.map(item => this.convertPos(item)))
 
-        const piece = this.grid[newCell[0]][newCell[1]]
-        console.log(piece.Name)
+      
+      const newCell = this.convertPos(this.convertPos(posNew));
+      const moveSet = new Set(moveAble.map((cell) => cell.join(",")));
+
+      if (moveSet.has(newCell.join(","))) {
+
+        this.grid[cellOld[0]][cellOld[1]] = null;
 
         if (
           this.grid[newCell[0]][newCell[1]] != "" &&
           this.grid[newCell[0]][newCell[1]] != null
         ) {
+
           fig.Pos = posNew;
           this.grid[newCell[0]][newCell[1]] = fig;
           this.BoardHandle();
+
         } else {
           console.log("err");
         }
@@ -121,4 +129,9 @@ export default class Board {
   }
 }
 
-// const a = new Board();
+const a = new Board();
+
+a.BoardHandle()
+a.placeFigure()
+
+console.log(new Bishop("B", "c1", "W").findMoveAble(a.convertPos('c1'),a.grid))
