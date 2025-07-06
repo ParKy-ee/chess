@@ -8,6 +8,7 @@ const Grid = () => {
   const slot = useRef(new Board())
 
   const handledata = (data, cell) => {
+    
     if (data && cell) {
       slot.current.move(data.name, data.pos, cell);
       setRenderKey((key) => key + 1);

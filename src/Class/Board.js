@@ -15,7 +15,7 @@ export default class Board {
     this.flag = true;
     //  Bishop
     this.figure.push(
-      new Bishop("B", "c1", "W"),
+      new Bishop("B", "a3", "W"),
       new Bishop("B", "f1", "W"),
       new Bishop("B", "c8", "B"),
       new Bishop("B", "f8", "B")
@@ -40,14 +40,12 @@ export default class Board {
 
   move(name, posOld, posNew) {
     const fig = this.findFigure(name, posOld);
+    console.log(name, posOld, posNew)
     if (fig) {
 
       const cellOld = this.convertPos(fig.Pos);
       const moveAble = fig.findMoveAble(cellOld, this.grid);
-      
-      // test
-      console.log(moveAble.map(item => this.convertPos(item)))
-
+      console.log(moveAble)
       
       const newCell = this.convertPos(this.convertPos(posNew));
       const moveSet = new Set(moveAble.map((cell) => cell.join(",")));
@@ -134,4 +132,3 @@ const a = new Board();
 a.BoardHandle()
 a.placeFigure()
 
-console.log(new Bishop("B", "c1", "W").findMoveAble(a.convertPos('c1'),a.grid))

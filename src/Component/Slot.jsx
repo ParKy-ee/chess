@@ -1,7 +1,7 @@
 import React from "react";
 import Board from "../Class/Board";
 
-const Slot = ({ className = "", cell, index }) => {
+const Slot = ({ className = "", cell, index, }) => {
   const slotPos = (slots) => {
     const func = new Board();
     const slot = func.convertPos2(slots);
@@ -11,6 +11,7 @@ const Slot = ({ className = "", cell, index }) => {
   const dragStart = (e) => {
     const data = e.target.getAttribute("data-item");
     const item = JSON.parse(data);
+
     if (item) {
       e.dataTransfer.setData("text/plain", JSON.stringify(item));
     }
@@ -22,7 +23,8 @@ const Slot = ({ className = "", cell, index }) => {
 
   const dragDrop = (e) => {
     e.preventDefault();
-    const data = e.dataTransfer.getData("text/plain");
+    // const data = e.dataTransfer.getData("text/plain");
+    
   };
 
   const handlepicture = (item) => {
@@ -68,7 +70,7 @@ const Slot = ({ className = "", cell, index }) => {
                 alt=""
               />
             ) : (
-              <img src="" />
+              null
             )}
           </div>
         ) : (
@@ -90,12 +92,12 @@ const Slot = ({ className = "", cell, index }) => {
                   pos: item.Pos,
                   side: item.Side,
                 })}
-                className="w-full  h-full overflow-hidden object-cover"
+                className="w-full  h-full overflow-hidden cursor-grab"
                 src={handlepicture(item)}
                 alt=""
               />
             ) : (
-               <img src="" />
+              null
             )}
           </div>
         );
