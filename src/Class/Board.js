@@ -36,37 +36,33 @@ export default class Board {
     });
   }
 
-
+  isEmty(cell) {
+    return this.grid[cell[0]][cell[1]];
+  }
 
   move(name, posOld, posNew) {
     const fig = this.findFigure(name, posOld);
+
     if (fig) {
+      const CELL_Old = this.convertPos(fig.Pos);
+      const moveAble = fig.findMoveAble(CELL_Old, this.grid);
+      const NEW_Cell = this.convertPos(posNew);
+      const CAPTURE = this.grid[NEW_Cell[0]][NEW_Cell[1]];
 
-      const cellOld = this.convertPos(fig.Pos);
-      const moveAble = fig.findMoveAble(cellOld, this.grid);
-      
-      // test
-      console.log(moveAble.map(item => this.convertPos(item)))
-
-      
-      const newCell = this.convertPos(this.convertPos(posNew));
       const moveSet = new Set(moveAble.map((cell) => cell.join(",")));
 
-      if (moveSet.has(newCell.join(","))) {
+      if (moveSet.has(NEW_Cell.join(","))) {
+        this.grid[CELL_Old[0]][CELL_Old[1]] = null;
 
-        this.grid[cellOld[0]][cellOld[1]] = null;
-
-        if (
-          this.grid[newCell[0]][newCell[1]] != "" &&
-          this.grid[newCell[0]][newCell[1]] != null
-        ) {
-
+        if (this.grid[NEW_Cell[0]][NEW_Cell[1]] == " ") {
           fig.Pos = posNew;
-          this.grid[newCell[0]][newCell[1]] = fig;
+          this.grid[NEW_Cell[0]][NEW_Cell[1]] = fig;
           this.BoardHandle();
-
         } else {
-          console.log("err");
+          fig.Pos = posNew;
+          this.grid[NEW_Cell[0]][NEW_Cell[1]] = null
+          this.grid[NEW_Cell[0]][NEW_Cell[1]]  = fig
+          console.log(this.grid)
         }
       } else {
         console.log("invalid move!!");
@@ -131,7 +127,7 @@ export default class Board {
 
 const a = new Board();
 
-a.BoardHandle()
-a.placeFigure()
+// a.BoardHandle()
+// a.placeFigure()
 
-console.log(new Bishop("B", "c1", "W").findMoveAble(a.convertPos('c1'),a.grid))
+console.log(a.convertPos("b2"));

@@ -1,18 +1,19 @@
 import React from "react";
 import Board from "../Class/Board";
 
-const Slot = ({ className = "", cell, index }) => {
+const Slot = ({ className = "", cell, index, getData, convert }) => {
+
+  console.log(cell)
   const slotPos = (slots) => {
-    const func = new Board();
-    const slot = func.convertPos2(slots);
+    const slot = convert(slots);
     return slot;
   };
 
   const dragStart = (e) => {
-    const data = e.target.getAttribute("data-item");
-    const item = JSON.parse(data);
-    if (item) {
-      e.dataTransfer.setData("text/plain", JSON.stringify(item));
+    const Str_DATA = e.target.getAttribute("data-item");
+    const JSON_DATA = JSON.parse(Str_DATA);
+    if (JSON_DATA) {
+      e.dataTransfer.setData("text/plain", JSON.stringify(JSON_DATA));
     }
   };
 
@@ -22,7 +23,9 @@ const Slot = ({ className = "", cell, index }) => {
 
   const dragDrop = (e) => {
     e.preventDefault();
-    const data = e.dataTransfer.getData("text/plain");
+    const Str_DATA = e.dataTransfer.getData("text/plain");
+    const JSON_DATA = JSON.parse(Str_DATA);
+    getData(JSON_DATA, e.target.id);
   };
 
   const handlepicture = (item) => {
@@ -54,8 +57,9 @@ const Slot = ({ className = "", cell, index }) => {
               index2 % 2 === 0 ? "bg-amber-100" : "bg-green-700"
             }`}
           >
-            {item.Name ? (
+            {item && item.Name  ? (
               <img
+                id={pos}
                 draggable="true"
                 data-item={JSON.stringify({
                   name: item.Name,
@@ -67,9 +71,7 @@ const Slot = ({ className = "", cell, index }) => {
                 src={handlepicture(item)}
                 alt=""
               />
-            ) : (
-              <img src="" />
-            )}
+            ) : null}
           </div>
         ) : (
           <div
@@ -81,8 +83,9 @@ const Slot = ({ className = "", cell, index }) => {
               index2 % 2 === 0 ? " bg-green-700" : "bg-amber-100"
             }`}
           >
-            {item.Name ? (
+            {item && item.Name  ? (
               <img
+                id={pos}
                 draggable="true"
                 onDragStart={dragStart}
                 data-item={JSON.stringify({
@@ -90,13 +93,11 @@ const Slot = ({ className = "", cell, index }) => {
                   pos: item.Pos,
                   side: item.Side,
                 })}
-                className="w-full  h-full overflow-hidden object-cover"
+                className="w-full  h-full overflow-hidden cursor-grab"
                 src={handlepicture(item)}
                 alt=""
               />
-            ) : (
-               <img src="" />
-            )}
+            ) : null}
           </div>
         );
       })}
