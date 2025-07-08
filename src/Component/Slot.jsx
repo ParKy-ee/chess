@@ -2,12 +2,14 @@ import React from "react";
 import Board from "../Class/Board";
 
 const Slot = ({ className = "", cell, index, getData, convert }) => {
+  
 
-  console.log(cell)
   const slotPos = (slots) => {
     const slot = convert(slots);
     return slot;
   };
+
+
 
   const dragStart = (e) => {
     const Str_DATA = e.target.getAttribute("data-item");
@@ -26,6 +28,8 @@ const Slot = ({ className = "", cell, index, getData, convert }) => {
     const Str_DATA = e.dataTransfer.getData("text/plain");
     const JSON_DATA = JSON.parse(Str_DATA);
     getData(JSON_DATA, e.target.id);
+    
+    
   };
 
   const handlepicture = (item) => {
@@ -57,7 +61,7 @@ const Slot = ({ className = "", cell, index, getData, convert }) => {
               index2 % 2 === 0 ? "bg-amber-100" : "bg-green-700"
             }`}
           >
-            {item && item.Name  ? (
+            {item && item.Name ? (
               <img
                 id={pos}
                 draggable="true"
@@ -83,7 +87,7 @@ const Slot = ({ className = "", cell, index, getData, convert }) => {
               index2 % 2 === 0 ? " bg-green-700" : "bg-amber-100"
             }`}
           >
-            {item && item.Name  ? (
+            {item && item.Name ? (
               <img
                 id={pos}
                 draggable="true"

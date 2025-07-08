@@ -15,7 +15,7 @@ export default class Board {
     this.flag = true;
     //  Bishop
     this.figure.push(
-      new Bishop("B", "a3", "W"),
+      new Bishop("B", "c1", "W"),
       new Bishop("B", "f1", "W"),
       new Bishop("B", "c8", "B"),
       new Bishop("B", "f8", "B")
@@ -35,6 +35,9 @@ export default class Board {
       }
     });
   }
+
+
+  handelrounde
 
   isEmty(cell) {
     return this.grid[cell[0]][cell[1]];
@@ -57,17 +60,22 @@ export default class Board {
           fig.Pos = posNew;
           this.grid[NEW_Cell[0]][NEW_Cell[1]] = fig;
           this.BoardHandle();
+          return true
         } else {
-          fig.Pos = posNew;
+          this.figure = this.figure.filter(cap => (cap !== CAPTURE) )
           this.grid[NEW_Cell[0]][NEW_Cell[1]] = null
+          fig.Pos = posNew;
           this.grid[NEW_Cell[0]][NEW_Cell[1]]  = fig
-          console.log(this.grid)
+          this.BoardHandle();
+          return true
         }
       } else {
         console.log("invalid move!!");
+        return false
       }
     } else {
       console.log("not found!!");
+      return false
     }
   }
 
@@ -124,9 +132,7 @@ export default class Board {
   }
 }
 
-const a = new Board();
-
 // a.BoardHandle()
 // a.placeFigure()
 
-console.log(a.convertPos("b2"));
+
