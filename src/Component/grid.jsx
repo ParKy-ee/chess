@@ -16,6 +16,7 @@ const Grid = () => {
     setGrid([...slot.current.grid]);
   }, []);
 
+
   const handledata = (data, TARGET_CELL) => {
     if (data && TARGET_CELL) {
       if(data.side === cuurentTurn){

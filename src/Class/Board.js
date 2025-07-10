@@ -1,4 +1,5 @@
 import Bishop from "./Bishop.js";
+import Night from "./Night.js";
 
 export default class Board {
   static col = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -18,7 +19,9 @@ export default class Board {
       new Bishop("B", "c1", "W"),
       new Bishop("B", "f1", "W"),
       new Bishop("B", "c8", "B"),
-      new Bishop("B", "f8", "B")
+      new Bishop("B", "f8", "B"),
+      new Night("N",'g2','W'),
+      new Night("N",'h2','B')
     );
   }
 

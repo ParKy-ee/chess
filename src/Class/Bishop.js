@@ -1,8 +1,8 @@
 import Figure from "./Figure.js";
 
 export default class Bishop extends Figure {
-  constructor(name, col, row, side) {
-    super(name, col, row, side);
+  constructor(name, pos, side) {
+    super(name, pos, side);
   }
 
   //  col = ["a", "b", "c", "d", "e", "f", "g", "h"];
