@@ -4,11 +4,12 @@ import Board from "../Class/Board.js";
 
 const Grid = () => {
   const [renderKey, setRenderKey] = useState(0);
-  const [cuurentTurn, setCurrentTurn] = useState('W')
+  const [cuurentTurn, setCurrentTurn] = useState("W");
 
   const slot = useRef(new Board());
 
   const [grid, setGrid] = useState(slot.current.grid);
+  const inCheck = slot.current.isCheck(cuurentTurn);
 
   useEffect(() => {
     slot.current.BoardHandle();
@@ -16,24 +17,38 @@ const Grid = () => {
     setGrid([...slot.current.grid]);
   }, []);
 
-
   const handledata = (data, TARGET_CELL) => {
+
+    if(!data || !TARGET_CELL) return;
+
+    if (inCheck) {
+      // เดินมาบัง
+      const pos = slot.current.convertPos(TARGET_CELL);
+      const row = pos[0];
+      const col = pos[1];
+
+      if(data.name === "K" && inCheck.some((item) => item[0] === row && item[1] === col)) {
+        return
+      }
+
+      if (!inCheck.some((item) => item[0] === row && item[1] === col)) {
+        return;
+      }
+    }
     if (data && TARGET_CELL) {
-      if(data.side === cuurentTurn){
+      if (data.side === cuurentTurn) {
         var moveSucess = slot.current.move(data.name, data.pos, TARGET_CELL);
         setGrid([...slot.current.grid]);
         setRenderKey((key) => key + 1);
-      }else{
-        console.log('not ur trun')
-        return
+      } else {
+        console.log("not ur trun");
+        return;
       }
-      if(moveSucess){
-        setCurrentTurn((prev) => prev === 'W'?  'B' : 'W')
+      if (moveSucess) {
+        setCurrentTurn((prev) => (prev === "W" ? "B" : "W"));
       }
     }
   };
-
-  
 
   return (
     <div className="flex  justify-center w-screen h-screen ">

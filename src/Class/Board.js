@@ -1,5 +1,9 @@
 import Bishop from "./Bishop.js";
+import King from "./King.js";
 import Night from "./Night.js";
+import Pawn from "./Pawn.js";
+import Queen from "./Queen.js";
+import Rook from "./Rook.js";
 
 export default class Board {
   static col = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -20,10 +24,39 @@ export default class Board {
       new Bishop("B", "f1", "W"),
       new Bishop("B", "c8", "B"),
       new Bishop("B", "f8", "B"),
-      new Night("N",'g2','W'),
-      new Night("N",'h2','B')
+      new Night("N", "b1", "W"),
+      new Night("N", "g1", "W"),
+      new Night("N", "b8", "B"),
+      new Night("N", "g8", "B"),
+      new Rook("R", "a1", "W"),
+      new Rook("R", "h1", "W"),
+      new Rook("R", "a8", "B"),
+      new Rook("R", "h8", "B"),
+      new Queen("Q", "d1", "W"),
+      new Queen("Q", "d8", "B"),
+      new King("K", "e1", "W"),
+      new King("K", "e8", "B"),
+      new Pawn("P", "a2", "W"),
+      new Pawn("P", "b2", "W"),
+      new Pawn("P", "c2", "W"),
+      new Pawn("P", "d2", "W"),
+      new Pawn("P", "e2", "W"),
+      new Pawn("P", "f2", "W"),
+      new Pawn("P", "g2", "W"),
+      new Pawn("P", "h2", "W"),
+      new Pawn("P", "a7", "B"),
+      new Pawn("P", "b7", "B"),
+      new Pawn("P", "c7", "B"),
+      new Pawn("P", "d7", "B"),
+      new Pawn("P", "e7", "B"),
+      new Pawn("P", "f7", "B"),
+      new Pawn("P", "g7", "B"),
+      new Pawn("P", "h7", "B")
     );
   }
+
+
+
 
   // Figure handel
   placeFigure() {
@@ -38,9 +71,35 @@ export default class Board {
       }
     });
   }
+  isCheck(side) {
+    const king = this.figure.find(
+      (fig) => fig.Name === "K" && fig.Side === side
+    );
+    if (!king) {
+      return false;
+    }
 
+    const posKing = this.convertPos(king.Pos);
 
-  handelrounde
+    const ENEMYS = this.grid
+      .flat()
+      .filter((fig) => fig && fig.Side !== king.Side && fig != " ");
+    for (let enemy of ENEMYS) {
+      const moveable = enemy.findMoveAble(
+        this.convertPos(enemy.Pos),
+        this.grid
+      );
+      const incheck = moveable.some(
+        (item) => item[0] === posKing[0] && item[1] === posKing[1]
+      );
+
+      if (incheck) {
+        const line = king.findCheck(posKing,this.grid,enemy)
+        return line;
+      }
+    }
+    return false;
+  }
 
   isEmty(cell) {
     return this.grid[cell[0]][cell[1]];
@@ -53,7 +112,6 @@ export default class Board {
       const moveAble = fig.findMoveAble(CELL_Old, this.grid);
       const NEW_Cell = this.convertPos(posNew);
       const CAPTURE = this.grid[NEW_Cell[0]][NEW_Cell[1]];
-
       const moveSet = new Set(moveAble.map((cell) => cell.join(",")));
 
       if (moveSet.has(NEW_Cell.join(","))) {
@@ -63,22 +121,22 @@ export default class Board {
           fig.Pos = posNew;
           this.grid[NEW_Cell[0]][NEW_Cell[1]] = fig;
           this.BoardHandle();
-          return true
+          return true;
         } else {
-          this.figure = this.figure.filter(cap => (cap !== CAPTURE) )
-          this.grid[NEW_Cell[0]][NEW_Cell[1]] = null
+          this.figure = this.figure.filter((cap) => cap !== CAPTURE);
+          this.grid[NEW_Cell[0]][NEW_Cell[1]] = null;
           fig.Pos = posNew;
-          this.grid[NEW_Cell[0]][NEW_Cell[1]]  = fig
+          this.grid[NEW_Cell[0]][NEW_Cell[1]] = fig;
           this.BoardHandle();
-          return true
+          return true;
         }
       } else {
         console.log("invalid move!!");
-        return false
+        return false;
       }
     } else {
       console.log("not found!!");
-      return false
+      return false;
     }
   }
 
@@ -135,7 +193,8 @@ export default class Board {
   }
 }
 
+// const a = new Board()
+
 // a.BoardHandle()
 // a.placeFigure()
-
-
+// console.log(a.showMoveable(new Pawn("P", "a2", "W")))

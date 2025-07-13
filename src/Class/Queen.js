@@ -1,6 +1,6 @@
 import Figure from "./Figure.js";
 
-export default class Bishop extends Figure {
+export default class Queen extends Figure {
   constructor(name, pos, side) {
     super(name, pos, side);
   }
@@ -9,15 +9,15 @@ export default class Bishop extends Figure {
   //  row = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
   // 4 case
-  // 1. -rol, +col -> right-up
-  // 1. -rol, -col -> left-up
-  // 1. +rol, +col -> right-down
-  // 1. +rol, -col -> left-down
 
   findMoveAble(pos, grid) {
     const direction = [
-      [-1, -1], 
-      [-1, +1], 
+      [+1, 0],
+      [-1, 0],
+      [0, -1],
+      [0, +1],
+      [-1, -1],
+      [-1, +1],
       [+1, -1],
       [+1, +1],
     ];

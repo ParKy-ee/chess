@@ -27,16 +27,13 @@ export default class Night extends Figure {
 
       if (this.isValid(r, c)) {
         const cell = grid[r][c];
-
-        console.log( cell)
-        if ( cell == " ") {
+        if (cell == " ") {
           moveAble.push([r, c]);
-        }else if(cell.Side !== this.Side){
-             moveAble.push([r, c]);
+        } else if (cell.Side !== this.Side) {
+          moveAble.push([r, c]);
         }
       }
     }
-    console.log(moveAble);
     return moveAble;
   }
 
