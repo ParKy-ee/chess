@@ -55,8 +55,57 @@ export default class Board {
     );
   }
 
+  castle(name, posOld, posNew) {
+    const king = this.findFigure(name, posOld);
+    const NEWCELL = this.convertPos(posNew);
+    const kingPos = this.convertPos(posOld);
+    const fig = this.grid[NEWCELL[0]][NEWCELL[1]];
+
+    if (fig !== " " && fig.Side === king.Side) {
+      return false;
+    }
+
+    if (posNew[0] === "g") {
+      
+      let r = kingPos[0];
+      let c = kingPos[1] + 1;
+
+      while (this.isValidPos(r, c)) {
+        let cell = this.grid[r][c];
+
+        if (cell.Name === "R") {
+          
+          break;
+        }
+        if (cell != " ") {
+          return false;
+        }
+
+        c = c + 1;
+      }
+    }
+
+    if (posNew === "g1" || posNew === "g8") {
+      var rook = this.findFigure("R", `h${posNew[1]}`);
+      var posRook = this.convertPos(rook.Pos)
+      if(rook.Side === "W") {
+        var newPosRook = this.convertPos('f1')
+      }else if(rook.Side === "B") {
+        var newPosRook = this.convertPos('f8')
+      }
+
+    }
 
 
+    this.grid[kingPos[0]][kingPos[1]] = null
+    this.grid[posRook[0]][posRook[1]] = null
+    king.Pos = posNew
+    rook.Pos = 'f1'
+    this.grid[NEWCELL[0]][NEWCELL[1]] = king
+    this.grid[newPosRook[0]][newPosRook[1]] = rook
+    this.BoardHandle();
+    return true
+  }
 
   // Figure handel
   placeFigure() {
@@ -94,7 +143,7 @@ export default class Board {
       );
 
       if (incheck) {
-        const line = king.findCheck(posKing,this.grid,enemy)
+        const line = king.findCheck(posKing, this.grid, enemy);
         return line;
       }
     }
